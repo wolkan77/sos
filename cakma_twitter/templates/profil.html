@@ -1,0 +1,35 @@
+{% extends 'giris_yapan_kullanici.html' %}
+
+{% block icerik %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div>{{ profile.username }}</div>
+            {% if user.username != profile.username %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                {% if not follows %}
+                <input class="btn btn-primary" type="submit" value="Takip et">
+                {% else %}
+                <input class="btn btn-danger" type="submit" value="Takibi bırak">
+                {% endif %}
+            </form>
+            {% endif %}
+            <div class="row">
+                <div class="col-3">tweet sayısı: {{ profile.tweet_set.count }}</div>
+                <div class="col-3">takipçi: {{ profile.followed_by.count }}</div>
+                <div class="col-3">takip ettikleri: {{ profile.follows.count }}</div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            {% for tweet in timeline %}
+            <div>
+                <div>{{ tweet.text }}</div>
+                <div>{{ tweet.created }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
